@@ -1,4 +1,3 @@
-<!-- Start Featured Product -->
 <section class="bg-light">
     <div class="container py-5">
         <div class="row text-center py-3">
@@ -7,13 +6,7 @@
                 <p>Top selling products</p>
             </div>
         </div>
-        <div class="row" id="my-featured-products">
-
-            <!-- Single Product -->
-
-            <!-- End Single Product -->
-
-        </div>
+        <div class="row" id="my-featured-products"></div>
     </div>
 </section>
 
@@ -56,4 +49,3 @@
     }
     getFeaturedProduct();
 </script>
-<!-- End Featured Product -->
