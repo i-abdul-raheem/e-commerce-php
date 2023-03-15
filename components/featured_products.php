@@ -7,37 +7,53 @@
                 <p>Top selling products</p>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="my-featured-products">
 
             <!-- Single Product -->
-            <div class="col-12 col-md-4 mb-4">
-                <div class="card h-100">
-                    <a href="shop-single.php">
-                        <img src="./assets/img/feature_prod_01.jpg" class="card-img-top" alt="..." />
-                    </a>
-                    <div class="card-body">
-                        <ul class="list-unstyled d-flex justify-content-between">
-                            <li>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-warning fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                                <i class="text-muted fa fa-star"></i>
-                            </li>
-                            <li class="text-muted text-right">$240.00</li>
-                        </ul>
-                        <a href="shop-single.php" class="h2 text-decoration-none text-dark">Gym Weight</a>
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt
-                            in culpa qui officia deserunt.
-                        </p>
-                        <!-- <p class="text-muted">Reviews (24)</p> -->
-                    </div>
-                </div>
-            </div>
+
             <!-- End Single Product -->
 
         </div>
     </div>
 </section>
+
+<script>
+    const truncateText = (text, n) => {
+        const temp = text.split(' ');
+        if (temp.length < n) return temp.join(' ');
+        return temp.slice(0, n + 1).join(' ') + "...";
+    }
+    const getFeaturedProduct = async () => {
+        const res = await fetch('./api/products.php').then(res => res.json());
+        const data = res.data;
+        data.filter((i) => i.featured !== "1");
+        let myData = "";
+        data?.map(i => {
+            myData += `
+       <div class="col-12 col-md-4 mb-4">
+               <div class="card h-100">
+                   <a href="shop-single.php">
+                       <img src="./assets/img/feature_prod_01.jpg" class="card-img-top" alt="..." />
+                   </a>
+                   <div class="card-body">
+                       <ul class="list-unstyled d-flex justify-content-between">
+                           <li>
+                               <i class="text-warning fa fa-star"></i>
+                               <i class="text-warning fa fa-star"></i>
+                               <i class="text-warning fa fa-star"></i>
+                               <i class="text-muted fa fa-star"></i>
+                               <i class="text-muted fa fa-star"></i>
+                           </li>
+                           <li class="text-muted text-right">$${i.price}</li>
+                       </ul>
+                       <a href="shop-single.php" class="h2 text-decoration-none text-dark d-block text-capitalize mb-3">${i.title}</a>
+                       <p class="card-text">${truncateText(i.description, 16)}</p>
+                   </div>
+               </div>
+           </div>
+       `});
+        document.getElementById('my-featured-products').innerHTML = myData;
+    }
+    getFeaturedProduct();
+</script>
 <!-- End Featured Product -->
