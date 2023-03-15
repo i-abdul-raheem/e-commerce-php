@@ -18,9 +18,9 @@
         res?.data.map((i, index) => {
             topCategories += `
             <div key="top-category-${index}" class="col-12 col-md-4 p-5 mt-3">
-                <a href="shop.php?category=${i.title}"><img src="${i.image}" class="rounded-circle img-fluid border" /></a>
+                <a href="shop.php?category=${i.category_id}"><img src="${i.image}" class="rounded-circle img-fluid border" /></a>
                 <h5 style="text-transform: capitalize;" class="text-center mt-3 mb-3">${i.title}</h5>
-                <p class="text-center"><a href="shop.php?category=${i.title}" class="btn btn-success">Go Shop</a></p>
+                <p class="text-center"><a href="shop.php?category=${i.category_id}" class="btn btn-success">Go Shop</a></p>
             </div>
             `;
         });
