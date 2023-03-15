@@ -1,0 +1,23 @@
+/*
+Custom Css
+*/
+#account_info:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-link i {
+  width: 50px;
+  text-align: center;
+}
+
+.nav-link {
+  color: #555;
+}
+
+.nav-item:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-item:hover .nav-link {
+  color: #000;
+}
