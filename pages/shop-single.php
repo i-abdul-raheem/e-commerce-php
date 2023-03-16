@@ -85,12 +85,14 @@ require('./components/search_modal.php');
 
                         <h6>Description:</h6>
                         <p id="product-description"></p>
-                        <ul class="list-inline">
+                        <ul class="list-inline" id="colors-div">
                             <li class="list-inline-item">
                                 <h6>Avaliable Color :</h6>
                             </li>
                             <li class="list-inline-item">
-                                <p class="text-muted"><strong>White / Black</strong></p>
+                                <select name="color" id="product-color" class="form-select">
+                                    <option value="">Select color...</option>
+                                </select>
                             </li>
                         </ul>
 
@@ -245,9 +247,19 @@ require('./components/search_modal.php');
                 document.getElementById('carousel-related-product').innerHTML = "No related products found";
             }
         }
+        const setProductColors = async (product) => {
+            const res = await fetch(`./api/product_colors.php?product=${product}`).then(res => res.json());
+            const data = res.data;
+            if (data && data.length > 0)
+                data.map(i => {
+                    document.getElementById('product-color').innerHTML += `<option value="${i.id}">${i.title}</option>`
+                })
+            else document.getElementById('colors-div').style.display = 'none';
+        }
         document.getElementById("product-image").src += data.image;
         setValueById("product-title", data.title);
         setValueById("product-price", `$${data.price}`);
+        setProductColors(data.product_id);
         setValueById("product-description", data.description);
         setValueById("product-specification", data.specification);
         setBrandTitle(data.brand);
