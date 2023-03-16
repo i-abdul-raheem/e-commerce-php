@@ -25,8 +25,8 @@
             myData += `
        <div class="col-12 col-md-4 mb-4">
                <div class="card h-100">
-                   <a href="shop-single.php">
-                       <img src="./assets/img/feature_prod_01.jpg" class="card-img-top" alt="..." />
+                   <a href="shop-single.php?product_id=${i.product_id}">
+                       <img src="./assets/img/${i.image}" class="card-img-top" alt="..." />
                    </a>
                    <div class="card-body">
                        <ul class="list-unstyled d-flex justify-content-between">
@@ -39,7 +39,7 @@
                            </li>
                            <li class="text-muted text-right">$${i.price}</li>
                        </ul>
-                       <a href="shop-single.php" class="h2 text-decoration-none text-dark d-block text-capitalize mb-3">${i.title}</a>
+                       <a href="shop-single.php?product_id=${i.product_id}" class="h2 text-decoration-none text-dark d-block text-capitalize mb-3">${i.title}</a>
                        <p class="card-text">${truncateText(i.description, 16)}</p>
                    </div>
                </div>

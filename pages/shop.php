@@ -52,7 +52,6 @@ require('./components/search_modal.php');
         if (!window.location.search)
             res = await fetch("./api/products.php").then(res => res.json());
         else {
-            console.log("./api/products.php" + window.location.search)
             res = await fetch("./api/products.php" + window.location.search).then(res => res.json());
         }
         const data = res?.data;
@@ -63,7 +62,9 @@ require('./components/search_modal.php');
                 <div class="col-md-4">
                     <div class="card mb-4 product-wap rounded-0">
                         <div class="card rounded-0">
-                        <a href="shop-single.php?product_id=${i.product_id}" class="text-decoration-none text-capitalize" style="font-weight: 'bold'"><img class="card-img rounded-0 img-fluid" src="assets/img/shop_01.jpg"></a>
+                        <a href="shop-single.php?product_id=${i.product_id}" class="text-decoration-none text-capitalize" style="font-weight: 'bold'">
+                            <img class="card-img rounded-0 img-fluid" src="assets/img/${i.image}">
+                        </a>
                         </div>
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <a href="shop-single.php?product_id=${i.product_id}" class="text-decoration-none text-capitalize" style="font-weight: 'bold'">${i.title}</a>

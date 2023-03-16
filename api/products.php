@@ -27,11 +27,11 @@ $json = json_encode($initial_data);
 $conn->close();
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        if (isset($_GET['id']) && !empty($_GET['id'])) {
+        if (isset($_GET['product_id']) && !empty($_GET['product_id'])) {
             $temp = json_decode($json, true);
             $found = false;
             for ($i = 0; $i < count($temp); $i++) {
-                if ($temp[$i]["product_id"] == $_GET['id']) {
+                if ($temp[$i]["product_id"] == $_GET['product_id']) {
                     $myData = $temp[$i];
                     $data = json_encode([
                         "status" => 200,
