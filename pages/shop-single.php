@@ -159,7 +159,7 @@ require('./components/search_modal.php');
         </div>
 
         <!--Start Carousel Wrapper-->
-        <div id="carousel-related-product"></div>
+        <div class="row" id="carousel-related-product"></div>
 
 
     </div>
@@ -181,20 +181,31 @@ require('./components/search_modal.php');
         const getRelatedProducts = async (id) => {
             const res = await fetch(`./api/products.php?category=${id}`).then(res => res.json());
             const data = res?.data;
+            const truncateText = (text, n) => {
+                const temp = text.split(' ');
+                if (temp.length < n) return temp.join(' ');
+                return temp.slice(0, n + 1).join(' ') + "...";
+            }
             if (data && data.length > 0) {
                 let myData = "";
                 data.map(i => {
                     myData += `
-                    <div class="p-2 pb-3">
-                        <div class="product-wap card rounded-0">
-                            <div class="card rounded-0">
+                    <div class="p-2 col-md-4 mb-3" style="height: 550px">
+                        <div class="card h-100 product-wap rounded-0">
+                            <div class="card border-0 rounded-0">
                                 <a href="shop-single.php?product_id=${i.product_id}">    
                                     <img class="card-img rounded-0 img-fluid" src="assets/img/${i.image}" />
                                 </a>
                             </div>
-                            <div class="card-body d-flex align-items-center justify-content-between">
+                            <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
                                 <a href="shop-single.php?product_id=${i.product_id}" class="h3 text-decoration-none text-capitalize">${i.title}</a>
                                 <p class="text-center mb-0">$${i.price}</p>
+                                </div>
+                            <hr />
+                            <div>
+                                <p>${truncateText(i.description, 16)}</p>
+                            </div>
                             </div>
                         </div>
                     </div>

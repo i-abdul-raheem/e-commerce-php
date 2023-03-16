@@ -56,19 +56,30 @@ require('./components/search_modal.php');
         }
         const data = res?.data;
         let myData = "";
+        const truncateText = (text, n) => {
+            const temp = text.split(' ');
+            if (temp.length < n) return temp.join(' ');
+            return temp.slice(0, n + 1).join(' ') + "...";
+        }
         if (data.length > 0)
             data?.map(i => {
                 myData += `
-                <div class="col-md-4">
-                    <div class="card mb-4 product-wap rounded-0">
-                        <div class="card rounded-0">
-                        <a href="shop-single.php?product_id=${i.product_id}" class="text-decoration-none text-capitalize" style="font-weight: 'bold'">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 product-wap rounded-0">
+                        <div class="card border-0 rounded-0">
+                        <a href="shop-single.php?product_id=${i.product_id}">
                             <img class="card-img rounded-0 img-fluid" src="assets/img/${i.image}">
                         </a>
                         </div>
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <a href="shop-single.php?product_id=${i.product_id}" class="text-decoration-none text-capitalize" style="font-weight: 'bold'">${i.title}</a>
-                            <p class="mb-0">$${i.price}</p>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="shop-single.php?product_id=${i.product_id}" class="text-decoration-none text-capitalize" style="font-weight: 'bold'"><strong>${i.title}</strong></a>
+                                <p class="mb-0">$${i.price}</p>
+                            </div>
+                            <hr />
+                            <div>
+                                <p>${truncateText(i.description, 16)}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
