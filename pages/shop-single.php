@@ -103,18 +103,10 @@ require('./components/search_modal.php');
                         <form action="" method="GET">
                             <input type="hidden" name="product-title" value="Activewear">
                             <div class="row">
-                                <div class="col-auto">
-                                    <ul class="list-inline pb-3">
+                                <div class="col-auto" id="sizes-div">
+                                    <ul class="list-inline pb-3" id="product-size">
                                         <li class="list-inline-item">Size :
-                                            <input type="hidden" name="product-size" id="product-size" value="S">
-                                        </li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">S</span>
-                                        </li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">M</span>
-                                        </li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">L</span>
-                                        </li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">XL</span>
+                                            <input type="hidden" name="product-size" id="product-size-val" value="">
                                         </li>
                                     </ul>
                                 </div>
@@ -170,7 +162,6 @@ require('./components/search_modal.php');
 
 <script>
     const getProductDetails = async () => {
-        console.log(window.location.search);
         const res = await fetch(`./api/products.php${window.location.search}`).then(res => res.json());
         const data = res?.data;
         const setValueById = (id, value) => {
@@ -252,20 +243,59 @@ require('./components/search_modal.php');
             const data = res.data;
             if (data && data.length > 0)
                 data.map(i => {
-                    document.getElementById('product-color').innerHTML += `<option value="${i.id}">${i.title}</option>`
+                    document.getElementById('product-color').innerHTML += `<option value="${i.color_id}">${i.title}</option>`
                 })
             else document.getElementById('colors-div').style.display = 'none';
+        }
+        const setProductSizes = async (product) => {
+            const res = await fetch(`./api/product_sizes.php?product=${product}`).then(res => res.json());
+            const data = res.data;
+            if (data && data.length > 0) {
+                data.map(i => {
+                    document.getElementById('product-size').innerHTML +=
+                        `
+                        <li class="list-inline-item">
+                            <span
+                                id="product-size-id-${i.size_id}"
+                                class="mySizeBtn btn border-secondary btn-size"
+                                onclick="setAciveColor(${i.size_id}, this)"
+                            >
+                                ${i.title}
+                            </span>
+                        </li>
+                        `
+                });
+
+                const mySizeBtns = document.querySelectorAll('.mySizeBtn');
+                mySizeBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const inActiveBtns = document.getElementsByClassName('mySizeBtn');
+                        for (let i = 0; i < inActiveBtns.length; i++) {
+                            inActiveBtns[i].classList.remove("btn-success");
+                            inActiveBtns[i].classList.add("border-secondary");
+                        }
+                        e.target.classList.add('btn-success');
+                        e.target.classList.remove('border-secondary');
+                    })
+                });
+            }
+            else document.getElementById('sizes-div').style.display = 'none';
         }
         document.getElementById("product-image").src += data.image;
         setValueById("product-title", data.title);
         setValueById("product-price", `$${data.price}`);
         setProductColors(data.product_id);
+        setProductSizes(data.product_id);
         setValueById("product-description", data.description);
         setValueById("product-specification", data.specification);
         setBrandTitle(data.brand);
         getRelatedProducts(data.category);
     }
+    const setAciveColor = (id) => {
+        document.getElementById('product-size-val').value = id;
+    }
     getProductDetails();
+
 </script>
 
 <?php
