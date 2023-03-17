@@ -27,23 +27,7 @@ require('./components/search_modal.php');
                     <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item"
                         data-bs-ride="carousel">
                         <!--Start Slides-->
-                        <div class="carousel-inner product-links-wap" role="listbox">
-
-                            <!--First slide-->
-                            <div class="carousel-item active">
-                                <div class="row">
-
-                                    <!-- Image 1 fo 3 -->
-                                    <div class="col-4">
-                                        <a href="#">
-                                            <img class="card-img img-fluid" id="c-first" src="assets/img/"
-                                                alt="Product Image 1">
-                                        </a>
-                                    </div>
-                                    <!-- End Image 1 fo 3 -->
-                                </div>
-                            </div>
-                            <!-- First slide-->
+                        <div class="carousel-inner product-links-wap" id="product-slider" role="listbox">
 
                         </div>
                         <!--End Slides-->
@@ -281,7 +265,7 @@ require('./components/search_modal.php');
             else document.getElementById('sizes-div').style.display = 'none';
         }
         document.getElementById("product-detail").src += data.image;
-        document.getElementById("c-first").src += data.image;
+        const firstImage = data.image;
         setValueById("product-title", data.title);
         setValueById("product-price", `$${data.price}`);
         setProductColors(data.product_id);
@@ -290,6 +274,57 @@ require('./components/search_modal.php');
         setValueById("product-specification", data.specification);
         setBrandTitle(data.brand);
         getRelatedProducts(data.category);
+        const setImages = async (product) => {
+            const res = await fetch(`./api/product_images.php?product=${product}`).then(res => res.json());
+            const data = res.data;
+            data.push({ link: firstImage });
+            data.reverse();
+            if (data && data.length > 0) {
+                let item = 0;
+                let myData = "";
+                data.map(i => {
+                    if (item === 0)
+                        myData += `
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-4">
+                                <a onclick="document.getElementById('product-detail').src = 'assets/img/${i.link}'">
+                                    <img class="card-img img-fluid" src="assets/img/${i.link}"
+                                        alt="Product Image 1">
+                                </a>
+                            </div>
+                    `;
+                    else if (item % 3 === 0)
+                        myData += `
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-4">
+                                <a onclick="document.getElementById('product-detail').src = 'assets/img/${i.link}'">
+                                    <img class="card-img img-fluid" src="assets/img/${i.link}"
+                                        alt="Product Image 1">
+                                </a>
+                            </div>
+                    `;
+                    else
+                        myData += `
+                            <div class="col-4">
+                                <a onclick="document.getElementById('product-detail').src = 'assets/img/${i.link}'">
+                                    <img class="card-img img-fluid" src="assets/img/${i.link}"
+                                        alt="Product Image 1">
+                                </a>
+                            </div>
+                    `;
+                    item++;
+                })
+                myData += '</div></div>';
+                document.getElementById(`product-slider`).innerHTML += myData;
+                document.getElementsByClassName('carousel-item')[0].classList.add('active');
+            }
+        }
+
+        setImages(data.product_id);
     }
     const setAciveColor = (id) => {
         document.getElementById('product-size-val').value = id;
