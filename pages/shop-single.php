@@ -12,8 +12,7 @@ require('./components/search_modal.php');
         <div class="row">
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
-                    <img id="product-image" class="card-img img-fluid" src="assets/img/" alt="Card image cap"
-                        id="product-detail">
+                    <img id="product-detail" class="card-img img-fluid" src="assets/img/" alt="Card image cap">
                 </div>
                 <div class="row">
                     <!--Start Controls-->
@@ -37,7 +36,7 @@ require('./components/search_modal.php');
                                     <!-- Image 1 fo 3 -->
                                     <div class="col-4">
                                         <a href="#">
-                                            <img class="card-img img-fluid" src="assets/img/product_single_10.jpg"
+                                            <img class="card-img img-fluid" id="c-first" src="assets/img/"
                                                 alt="Product Image 1">
                                         </a>
                                     </div>
@@ -281,7 +280,8 @@ require('./components/search_modal.php');
             }
             else document.getElementById('sizes-div').style.display = 'none';
         }
-        document.getElementById("product-image").src += data.image;
+        document.getElementById("product-detail").src += data.image;
+        document.getElementById("c-first").src += data.image;
         setValueById("product-title", data.title);
         setValueById("product-price", `$${data.price}`);
         setProductColors(data.product_id);
