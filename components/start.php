@@ -1,5 +1,6 @@
 <?php
 require('./api/config.php');
+require('./api/page_setup.php');
 
 // Connect to database
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -15,7 +16,7 @@ if ($conn->connect_error) {
 <html lang="en">
 
 <head>
-    <title>ZarSaw Traders</title>
+    <title><?php echo SITE_TITLE; ?></title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
