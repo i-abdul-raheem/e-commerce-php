@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top bg-light">
     <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand text-success logo h1 align-self-center" href="index.php">
-            ZarSaw Traders
+            <?php echo SITE_TITLE; ?>
         </a>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
