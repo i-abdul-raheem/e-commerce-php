@@ -199,9 +199,18 @@ require('./components/search_modal.php');
         document.cookie = cookieValue;
     };
 
+    function isJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
     const getCartItems = () => {
         const cookies = document.cookie.split('=');
-        if(cookies[0] === 'cart') {
+        if(cookies[0] === 'cart' && isJsonString(cookies[1])) {
             const items = JSON.parse(cookies[1]);
             return items;
         }
