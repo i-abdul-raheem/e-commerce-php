@@ -201,8 +201,11 @@ require('./components/search_modal.php');
 
     const getCartItems = () => {
         const cookies = document.cookie.split('=');
-        const items = JSON.parse(cookies[1]);
-        return items;
+        if(cookies[0] === 'cart') {
+            const items = JSON.parse(cookies[1]);
+            return items;
+        }
+        return [];
     }
 
     const removeItem = (index) => {
