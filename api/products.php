@@ -86,6 +86,69 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo ($data);
         break;
 
+    case 'POST':
+        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($_POST['action'] == 'new') {
+            $file_name = $_FILES['image']['name'];
+            $file_size = $_FILES['image']['size'];
+            $file_tmp = $_FILES['image']['tmp_name'];
+            $file_type = $_FILES['image']['type'];
+            $obj = new stdClass();
+            $obj->title = $_POST['title'];
+            $obj->price = $_POST['price'];
+            $obj->category = $_POST['category'];
+            $obj->brand = $_POST['brand'];
+            $obj->description = $_POST['description'];
+            $obj->specification = $_POST['specification'];
+            $obj->image = $file_name;
+            if (move_uploaded_file($file_tmp, "../assets/img/" . $file_name)) {
+                $insertQuery = "INSERT INTO products VALUES(NULL, '$obj->title', '$obj->price', '$obj->brand', '$obj->description', '$obj->specification', '$obj->category', 0, '$obj->image')";
+                if ($conn->query($insertQuery)) {
+                    $data = json_encode([
+                        "status" => 201,
+                        "message" => "Created",
+                        "data" => $obj
+                    ]);
+                    http_response_code(200);
+                } else {
+                    $data = json_encode([
+                        "status" => 500,
+                        "message" => "Error",
+                        "data" => $obj
+                    ]);
+                    http_response_code(500);
+                }
+            } else {
+                $data = json_encode([
+                    "status" => 500,
+                    "message" => "Error",
+                    "data" => $obj
+                ]);
+                http_response_code(500);
+            }
+        } else if ($_POST['action'] == 'delete') {
+            $id = (int) $_POST['id'];
+            $sqlDelete = "DELETE from products WHERE product_id=$id";
+            if ($conn->query($sqlDelete)) {
+                $data = json_encode([
+                    "status" => 200,
+                    "message" => "Deleted",
+                    "data" => $id
+                ]);
+                http_response_code(200);
+            } else {
+                $data = json_encode([
+                    "status" => 500,
+                    "message" => "Error",
+                    "data" => $conn
+                ]);
+                http_response_code(500);
+            }
+        }
+        echo ($data);
+        $conn->close();
+        break;
+
     default:
         $data = json_encode([
             "status" => 405,

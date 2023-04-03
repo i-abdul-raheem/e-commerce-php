@@ -14,6 +14,7 @@ require("./components/header.php");
                     <tr>
                         <th>#</th>
                         <th>Title</th>
+                        <th>Cateegory</th>
                         <th>Image</th>
                         <th>Price</th>
                         <th>Brand</th>
@@ -22,19 +23,7 @@ require("./components/header.php");
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <th>Shoes</th>
-                        <td><img style="width: 100px;" src="../assets/img/banner_img_01.jpg" alt="Banner 1" /></td>
-                        <td>$250</td>
-                        <td>Nike</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem nisi repellat perspiciatis,
-                            quos natus unde perferendis explicabo recusandae quae itaque voluptates vero nemo
-                            reprehenderit inventore sit atque. Voluptatibus, distinctio dolorem!</td>
-                        <td>Long Lasting, Durable, Reliable</td>
-                        <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                    </tr>
+                <tbody id="myContent">
                 </tbody>
             </table>
         </div>
@@ -52,8 +41,8 @@ require("./components/header.php");
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form action="" class="form">
+            <form action="" class="form" id="new-form" enctype="multipart/form-data">
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Title</label>
                         <input type="text" class="form-control" />
@@ -63,8 +52,14 @@ require("./components/header.php");
                         <input type="number" class="form-control" />
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Category</label>
+                        <select class="form-control" id="category-options">
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Brand</label>
-                        <select class="form-control">
+                        <select class="form-control" id="brand-options">
                             <option value="">Select Brand</option>
                         </select>
                     </div>
@@ -80,12 +75,12 @@ require("./components/header.php");
                         <label for="exampleInputEmail1">Product Image</label>
                         <input type="file" class="form-control" />
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -93,4 +88,92 @@ require("./components/header.php");
 
 <script>
     document.getElementById('productMenu').className = "active";
+
+    const form = document.getElementById('new-form')
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const title = event.target[0].value;
+        const price = event.target[1].value;
+        const category = event.target[2].value;
+        const brand = event.target[3].value;
+        const description = event.target[4].value;
+        const specification = event.target[5].value;
+        const image = event.target[6].files[0];
+        const formData = new FormData();
+        formData.append("action", "new");
+        formData.append("title", title);
+        formData.append("price", price);
+        formData.append("category", category);
+        formData.append("brand", brand);
+        formData.append("description", description);
+        formData.append("specification", specification);
+        formData.append("image", image);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/products.php", options).then(res => res.json());
+        console.log(res);
+        populateContent();
+    });
+
+    async function getCategoryName(id, ref) {
+        const res = await fetch(`../api/categories.php?id=${id}`).then(res => res.json());
+        document.getElementById(`cat-${ref}`).innerHTML = res?.data?.title || '-';
+    }
+
+    async function getBrandName(id, ref) {
+        const res = await fetch(`../api/brands.php?id=${id}`).then(res => res.json());
+        document.getElementById(`brand-${ref}`).innerHTML = res?.data?.title || '-';
+    }
+
+    async function setCategories() {
+        const res = await fetch("../api/categories.php").then(res => res.json());
+        const data = res?.data || [];
+        data.map((i) => {
+            document.getElementById("category-options").innerHTML += `<option value="${i.category_id}">${i.title}</option>`
+        })
+    }
+
+    async function setBrands() {
+        const res = await fetch("../api/brands.php").then(res => res.json());
+        const data = res?.data || [];
+        data.map((i) => {
+            document.getElementById("brand-options").innerHTML += `<option value="${i.brand_id}">${i.title}</option>`
+        })
+    }
+
+    async function populateContent() {
+        const target = document.getElementById("myContent");
+        target.innerHTML = "";
+        const res = await fetch("../api/products.php").then(res => res.json());
+        for (let i of res.data) {
+            target.innerHTML += `
+                    <tr>
+                        <td>${i.product_id}</td>
+                        <td style="text-transform: capitalize;" >${i.title}</td>
+                        <td style="text-transform: capitalize;" id="cat-${i.product_id}"></td>
+                        <td><img style="width: 100px;" src="../assets/img/${i.image}" alt="${i.title}" /></td>
+                        <td>$${i.price}</td>
+                        <td style="text-transform: capitalize;" id="brand-${i.product_id}"></td>
+                        <td>${i.description}</td>
+                        <td>${i.specification}</td>
+                        <td><button onclick="deleteItem(${i.product_id})" class="btn btn-danger"><i
+                                    class="fa fa-trash"></i></button></td>
+                    </tr>
+            `;
+            getCategoryName(i.category, i.product_id);
+            getBrandName(i.brand, i.product_id);
+        }
+    }
+
+    async function deleteItem(id) {
+        const formData = new FormData();
+        formData.append("action", "delete");
+        formData.append("id", id);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/products.php", options).then(res => res.json());
+        populateContent();
+    }
+
+    populateContent();
+    setCategories();
+    setBrands();
 </script>
