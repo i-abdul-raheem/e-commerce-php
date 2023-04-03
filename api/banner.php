@@ -63,6 +63,66 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo ($data);
         break;
 
+    case 'POST':
+        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($_POST['action'] == 'new') {
+            $file_name = $_FILES['image']['name'];
+            $file_size = $_FILES['image']['size'];
+            $file_tmp = $_FILES['image']['tmp_name'];
+            $file_type = $_FILES['image']['type'];
+            $obj = new stdClass();
+            $obj->heading = $_POST['heading'];
+            $obj->sub_heading = $_POST['sub_heading'];
+            $obj->details = $_POST['details'];
+            $obj->image = "./assets/img/" . $file_name;
+            if (move_uploaded_file($file_tmp, "../assets/img/" . $file_name)) {
+                $insertQuery = "INSERT INTO banners VALUES(NULL, '$obj->image', '$obj->heading', '$obj->sub_heading', '$obj->details')";
+                if ($conn->query($insertQuery)) {
+                    $data = json_encode([
+                        "status" => 201,
+                        "message" => "Created",
+                        "data" => $obj
+                    ]);
+                    http_response_code(200);
+                } else {
+                    $data = json_encode([
+                        "status" => 500,
+                        "message" => "Error",
+                        "data" => $obj
+                    ]);
+                    http_response_code(500);
+                }
+            } else {
+                $data = json_encode([
+                    "status" => 500,
+                    "message" => "Error",
+                    "data" => $obj
+                ]);
+                http_response_code(500);
+            }
+        } else if ($_POST['action'] == 'delete') {
+            $id = (int) $_POST['id'];
+            $sqlDelete = "DELETE from banners WHERE banner_id=$id";
+            if ($conn->query($sqlDelete)) {
+                $data = json_encode([
+                    "status" => 200,
+                    "message" => "Deleted",
+                    "data" => $id
+                ]);
+                http_response_code(200);
+            } else {
+                $data = json_encode([
+                    "status" => 500,
+                    "message" => "Error",
+                    "data" => $conn
+                ]);
+                http_response_code(500);
+            }
+        }
+        echo ($data);
+        $conn->close();
+        break;
+
     default:
         $data = json_encode([
             "status" => 405,
