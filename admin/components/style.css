@@ -1,0 +1,8 @@
+.myCardHeader{
+display: grid;
+grid-template-columns: 1fr 0.1fr;
+}
+nav {
+    background-color: #222222;
+    border-radius: 0;
+}
