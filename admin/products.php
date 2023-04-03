@@ -110,7 +110,6 @@ require("./components/header.php");
         formData.append("image", image);
         const options = { method: "POST", body: formData }
         const res = await fetch("../api/products.php", options).then(res => res.json());
-        console.log(res);
         populateContent();
     });
 

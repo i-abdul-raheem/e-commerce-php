@@ -1,8 +1,13 @@
-.myCardHeader{
-display: grid;
-grid-template-columns: 1fr 0.1fr;
+.myCardHeader {
+  display: grid;
+  grid-template-columns: 1fr 0.1fr;
 }
 nav {
-    background-color: #222222;
+  background-color: #222222;
+  border-radius: 0;
+}
+@media (min-width: 768px) {
+  .navbar {
     border-radius: 0;
+  }
 }

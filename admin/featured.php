@@ -13,7 +13,8 @@ require("./components/header.php");
                         <th>#</th>
                         <th>Title</th>
                         <th>Image</th>
-                        <th>Toggle</th>
+                        <th>Category</th>
+                        <th>Featured</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,6 +22,7 @@ require("./components/header.php");
                         <td>1</td>
                         <th>Shoes</th>
                         <td><img style="width: 100px;" src="../assets/img/banner_img_01.jpg" alt="Banner 1" /></td>
+                        <td>CATEGOTY</td>
                         <td>
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="customSwitches">

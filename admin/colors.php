@@ -18,13 +18,7 @@ require("./components/header.php");
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <th>Shoes</th>
-                        <td>White</td>
-                        <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                    </tr>
+                <tbody id="myContent">
                 </tbody>
             </table>
         </div>
@@ -42,11 +36,11 @@ require("./components/header.php");
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form action="" class="form">
+            <form action="" class="form" id="new-form">
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Product</label>
-                        <select class="form-control">
+                        <select class="form-control" id="product-options">
                             <option value="">Select Product*</option>
                         </select>
                     </div>
@@ -54,17 +48,74 @@ require("./components/header.php");
                         <label for="exampleInputEmail1">Color</label>
                         <input type="text" class="form-control" />
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 
 <script>
-  document.getElementById('colorMenu').className = "active";
+    document.getElementById('colorMenu').className = "active";
+
+    const form = document.getElementById('new-form')
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const product = event.target[0].value;
+        const title = event.target[1].value;
+        const formData = new FormData();
+        formData.append("action", "new");
+        formData.append("product", product);
+        formData.append("title", title);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/product_colors.php", options).then(res => res.json());
+        populateContent();
+    });
+
+    async function setProducts() {
+        const res = await fetch("../api/products.php").then(res => res.json());
+        const data = res?.data || [];
+        data.map((i) => {
+            document.getElementById("product-options").innerHTML += `<option value="${i.product_id}">${i.title}</option>`
+        })
+    }
+
+    async function populateContent() {
+        const target = document.getElementById("myContent");
+        target.innerHTML = "";
+        const res = await fetch("../api/product_colors.php").then(res => res.json());
+        for (let i of res.data) {
+            target.innerHTML += `
+                    <tr>
+                        <td>${i.color_id}</td>
+                        <td id="product-${i.color_id}"></td>
+                        <td>${i.title}</td>
+                        <td><button onClick="deleteItem(${i.color_id})" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+            `;
+            getProductName(i.product, i.color_id);
+        }
+    }
+
+
+    async function getProductName(id, ref) {
+        const res = await fetch(`../api/products.php?product_id=${id}`).then(res => res.json());
+        document.getElementById(`product-${ref}`).innerHTML = res?.data?.title || '-';
+    }
+
+    async function deleteItem(id) {
+        const formData = new FormData();
+        formData.append("action", "delete");
+        formData.append("id", id);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/product_colors.php", options).then(res => res.json());
+        populateContent();
+    }
+
+    populateContent();
+    setProducts();
 </script>
