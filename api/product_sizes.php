@@ -86,6 +86,51 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo ($data);
         break;
 
+    case 'POST':
+        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        if ($_POST['action'] == 'new') {
+            $obj = new stdClass();
+            $obj->title = $_POST['title'];
+            $obj->product = $_POST['product'];
+            $insertQuery = "INSERT INTO product_sizes VALUES(NULL, '$obj->product', '$obj->title')";
+            if ($conn->query($insertQuery)) {
+                $data = json_encode([
+                    "status" => 201,
+                    "message" => "Created",
+                    "data" => $obj
+                ]);
+                http_response_code(200);
+            } else {
+                $data = json_encode([
+                    "status" => 500,
+                    "message" => "Error",
+                    "data" => $obj
+                ]);
+                http_response_code(500);
+            }
+        } else if ($_POST['action'] == 'delete') {
+            $id = (int) $_POST['id'];
+            $sqlDelete = "DELETE from product_sizes WHERE size_id=$id";
+            if ($conn->query($sqlDelete)) {
+                $data = json_encode([
+                    "status" => 200,
+                    "message" => "Deleted",
+                    "data" => $id
+                ]);
+                http_response_code(200);
+            } else {
+                $data = json_encode([
+                    "status" => 500,
+                    "message" => "Error",
+                    "data" => $conn
+                ]);
+                http_response_code(500);
+            }
+        }
+        echo ($data);
+        $conn->close();
+        break;
+
     default:
         $data = json_encode([
             "status" => 405,
