@@ -18,13 +18,7 @@ require("./components/header.php");
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <th>Shoes</th>
-                        <td><img style="width: 100px;" src="../assets/img/banner_img_01.jpg" alt="Banner 1" /></td>
-                        <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                    </tr>
+                <tbody id="myContent">
                 </tbody>
             </table>
         </div>
@@ -42,27 +36,69 @@ require("./components/header.php");
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form action="" class="form">
+            <form action="" class="form" id="new-form" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Title</label>
-                        <input type="text" class="form-control" />
+                        <input type="text" class="form-control" required />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Category Image</label>
-                        <input type="file" class="form-control" />
+                        <input type="file" accept="image/jpg, image/png, image/jpeg"  class="form-control" required />
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" is="closeModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 
 <script>
-  document.getElementById('categoryMenu').className = "active";
+    document.getElementById('categoryMenu').className = "active";
+
+    const form = document.getElementById('new-form')
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const title = event.target[0].value;
+        const image = event.target[1].files[0];
+        const formData = new FormData();
+        formData.append("action", "new");
+        formData.append("title", title);
+        formData.append("image", image);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/categories.php", options).then(res => res.json());
+        populateContent();
+    });
+
+    async function populateContent() {
+        const target = document.getElementById("myContent");
+        target.innerHTML = "";
+        const res = await fetch("../api/categories.php").then(res => res.json());
+        for (let i of res.data) {
+            target.innerHTML += `
+                    <tr>
+                        <td>${i.category_id}</td>
+                        <th>${i.title}</th>
+                        <td><img style="width: 100px;" src=".${i.image}" alt="Categories 1" /></td>
+                        <td><button onClick="deleteItem(${i.category_id})" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+            `
+        }
+    }
+
+    async function deleteItem(id) {
+        const formData = new FormData();
+        formData.append("action", "delete");
+        formData.append("id", id);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/categories.php", options).then(res => res.json());
+        populateContent();
+    }
+
+    populateContent();
+
 </script>
