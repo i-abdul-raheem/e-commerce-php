@@ -144,6 +144,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 ]);
                 http_response_code(500);
             }
+        } else if ($_POST['action'] == 'update-featured') {
+            $id = (int) $_POST['id'];
+            $featured = (int) $_POST['featured'];
+            $sqlUpdate = "UPDATE products SET featured=$featured WHERE product_id=$id";
+            if ($conn->query($sqlUpdate)) {
+                $data = json_encode([
+                    "status" => 200,
+                    "message" => "Updated",
+                    "data" => $id
+                ]);
+                http_response_code(200);
+            } else {
+                $data = json_encode([
+                    "status" => 500,
+                    "message" => "Error",
+                    "data" => $conn
+                ]);
+                http_response_code(500);
+            }
         }
         echo ($data);
         $conn->close();

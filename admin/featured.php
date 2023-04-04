@@ -40,15 +40,38 @@ require("./components/header.php");
                         <td id="cat-${i.product_id}"></td>
                         <td>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="check-${i.product_id}" />
+                                <input onclick="toggleCheck(${i.product_id})" type="checkbox" class="custom-control-input" id="check-${i.product_id}" ${i.featured == 1 && 'checked'} />
                             </div>
                         </td>
                     </tr>
         `;
             getCategoryName(i.category, i.product_id);
-            if (i.featured == 1) {
-                document.getElementById(`check-${i.product_id}`).checked = true;
-            }
+        }
+    }
+
+    async function activateFeature(id) {
+        const formData = new FormData();
+        formData.append("action", "update-featured");
+        formData.append("id", id);
+        formData.append("featured", 1);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/products.php", options).then(res => res.json());
+    }
+
+    async function deactivateFeature(id) {
+        const formData = new FormData();
+        formData.append("action", "update-featured");
+        formData.append("id", id);
+        formData.append("featured", 0);
+        const options = { method: "POST", body: formData }
+        const res = await fetch("../api/products.php", options).then(res => res.json());
+    }
+
+    function toggleCheck(id) {
+        if(document.getElementById(`check-${id}`).checked) {
+            activateFeature(id);
+        } else {
+            deactivateFeature(id);
         }
     }
 
