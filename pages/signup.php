@@ -91,7 +91,11 @@ require('./components/search_modal.php');
                     </div>
                     <div class="col col-lg-6 col-md-6 col-sm-12 mt-3">
                         <button type="submit" class="btn btn-success">Sign up</button>
-                        <p class="text-danger" id="error"></p>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                    <div class="col col-lg-6 col-md-6 col-sm-12 mt-3">
+                        <span class="text-danger" id="error"></span>
+                        <span class="text-success" id="success"></span>
                     </div>
                 </div>
             </form>
@@ -126,7 +130,9 @@ require('./components/search_modal.php');
         const validate_email = await fetch("./api/user-validate.php", options).then(res => res.json());
         if (validate_email.status !== 200) {
             valid = false;
+            document.getElementById('success').innerHTML = "";
             document.getElementById('error').innerHTML = validate_email.message;
+            return;
         }
 
         formData.set("validation", "mobile");
@@ -134,7 +140,9 @@ require('./components/search_modal.php');
         const validate_mobile = await fetch("./api/user-validate.php", options).then(res => res.json());
         if (validate_mobile.status !== 200) {
             valid = false;
+            document.getElementById('success').innerHTML = "";
             document.getElementById('error').innerHTML = validate_mobile.message;
+            return;
         }
 
         formData.set("validation", "password");
@@ -142,12 +150,25 @@ require('./components/search_modal.php');
         const validate_password = await fetch("./api/user-validate.php", options).then(res => res.json());
         if (validate_password.status !== 200) {
             valid = false;
+            document.getElementById('success').innerHTML = "";
             document.getElementById('error').innerHTML = validate_password.message;
+            return;
         }
 
-        if(valid) {
+        if (valid) {
             document.getElementById('error').innerHTML = "";
-            // Register User
+            formData.append("password", document.getElementById('password1').value);
+            formData.delete("validation");
+            formData.append("action", "new");
+            options.body = formData;
+            const res = await fetch("./api/users.php", options).then(res => res.json());
+            if(res.status === 200){
+                document.getElementById('error').innerHTML = "";
+                document.getElementById('success').innerHTML = res.message;
+            } else {
+                document.getElementById('error').innerHTML = res.message;
+                document.getElementById('success').innerHTML = "";
+            }
         }
 
     });

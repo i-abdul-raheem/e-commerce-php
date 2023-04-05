@@ -12,12 +12,12 @@ if ($conn->connect_error) {
 
 if ($_POST['validation'] == 'email') {
     $email = $_POST['email'];
-    $query = "SELECT * FROM users WHERE email=$email";
+    $query = "SELECT * FROM users WHERE email='$email'";
     $res = mysqli_query($conn, $query);
     if (mysqli_num_rows($res) > 0) {
         $data = json_encode([
             "status" => 500,
-            "message" => "User already exist!",
+            "message" => "User already exist with this email!",
             "data" => null
         ]);
         http_response_code(500);
@@ -32,12 +32,12 @@ if ($_POST['validation'] == 'email') {
 }
 if ($_POST['validation'] == 'mobile') {
     $mobile = $_POST['mobile'];
-    $query = "SELECT * FROM users WHERE mobile=$mobile";
+    $query = "SELECT * FROM users WHERE mobile='$mobile'";
     $res = mysqli_query($conn, $query);
     if (mysqli_num_rows($res) > 0) {
         $data = json_encode([
             "status" => 500,
-            "message" => "User already exist!",
+            "message" => "User already exist with this mobile number!",
             "data" => null
         ]);
         http_response_code(500);
