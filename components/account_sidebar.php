@@ -43,8 +43,8 @@ $logged = false;
                     </div>
                     <div class="account-info px-4 py-2">
                         <span style="display: block; font-weight: bold;" class="name">Abdul Raheem</span>
-                        <span class="logout"><a href="<?php echo $_SERVER['PHP_SELF']; ?>" onclick="deleteCookie('zarsaw_login')"
-                                class="text-danger">Logout</a></span>
+                        <span class="logout"><a href="<?php echo $_SERVER['PHP_SELF']; ?>"
+                                onclick="deleteCookie('zarsaw_login')" class="text-danger">Logout</a></span>
                     </div>
                 </section>
                 <hr />
@@ -90,13 +90,11 @@ $logged = false;
 
 <script>
     const loginForm = document.getElementById('login-form');
-    function setCookie(name, value, days) {
+    function setCookie(name, value) {
         let expires = "";
-        if (days) {
-            const date = new Date();
-            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-            expires = "; expires=" + date.toUTCString();
-        }
+        const date = new Date();
+        date.setTime(date.getTime() + 1 * 24 * 60 * 60 * 1000);
+        expires = "; expires=" + date.toUTCString();
         document.cookie = name + "=" + value + expires + "; path=/";
     }
     function getCookie(name) {
@@ -127,7 +125,7 @@ $logged = false;
             if (res.status !== 200) {
                 document.getElementById("error").innerHTML = "Username/Password not correct!";
             } else {
-                setCookie("zarsaw_login", JSON.stringify(res.data), 1);
+                setCookie("zarsaw_login", JSON.stringify(res.data));
                 console.log(getCookie("zarsaw_login"))
                 location.reload();
             }

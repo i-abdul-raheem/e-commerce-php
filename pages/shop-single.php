@@ -185,20 +185,6 @@ require('./components/search_modal.php');
         updateCart();
     }
 
-    const setCookie = (name, json) => {
-        let cookieValue = '';
-        let expire = '';
-        let period = '';
-        cookieValue = name + '=' + JSON.stringify(json) + ';';
-        cookieValue += 'path=/ ;';
-        period = 30;
-        expire = new Date();
-        expire.setTime(expire.getTime() + 1000 * 3600 * 24 * period);
-        expire.toUTCString();
-        cookieValue += 'expires=' + expire + ';';
-        document.cookie = document.cookie + cookieValue;
-    };
-
     function isJsonString(str) {
         try {
             JSON.parse(str);
@@ -210,7 +196,7 @@ require('./components/search_modal.php');
 
     const getCartItems = () => {
         const cookies = document.cookie.split('=');
-        if(cookies[0] === 'cart' && isJsonString(cookies[1])) {
+        if (cookies[0] === 'cart' && isJsonString(cookies[1])) {
             const items = JSON.parse(cookies[1]);
             return items;
         }
