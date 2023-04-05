@@ -42,7 +42,7 @@
                     data-bs-target="#account" aria-controls="account">
                     <i class="fa fa-fw fa-user text-dark mr-3"></i>
                     <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill text-dark"><i
-                            class="fa fa-dot-circle text-success"></i></span>
+                            class="fa fa-dot-circle text-secondary text-success"></i></span>
                 </a>
             </div>
         </div>
