@@ -6,9 +6,12 @@
     </div>
     <div class="offcanvas-body" id="my-cart"></div>
     <div class="offcanvas-footer p-3 bg-light d-flex justify-content-between">
-        <a href="#checkout" class="btn btn-success">Chechout</a>
-        <!-- <a class="nav-icon position-relative text-decoration-none btn btn-success" data-bs-toggle="offcanvas"
-            data-bs-target="#account" aria-controls="account">Login</a> -->
+        <?php
+        if (isset($_COOKIE["zarsaw_login"])) {
+            echo '<a href="#checkout" class="btn btn-success">Chechout</a>';
+        } else {
+            echo '<a class="nav-icon position-relative text-decoration-none btn btn-success" data-bs-toggle="offcanvas" data-bs-target="#account" aria-controls="account">Login</a>';
+        } ?>
         <h4 class="total">
             Total: $<span id="myTotalPrice"></span>
         </h4>

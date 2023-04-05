@@ -196,7 +196,7 @@ require('./components/search_modal.php');
         expire.setTime(expire.getTime() + 1000 * 3600 * 24 * period);
         expire.toUTCString();
         cookieValue += 'expires=' + expire + ';';
-        document.cookie = cookieValue;
+        document.cookie = document.cookie + cookieValue;
     };
 
     function isJsonString(str) {

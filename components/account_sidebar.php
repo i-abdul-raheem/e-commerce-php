@@ -9,26 +9,30 @@ $logged = false;
     </div>
     <div class="offcanvas-body">
         <?php
-        if (!$logged) {
+        if (!isset($_COOKIE["zarsaw_login"])) {
             ?>
             <div class="d-flex justify-content-center">
                 <div>
                     <h2 style="text-transform: uppercase;">Login to continue</h2>
-                    <form action="" class="form mb-3">
+                    <form action="" class="form mb-3" id="login-form">
                         <div class="form-group mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" id="username" class="form-control" placeholder="Enter Username" required />
+                            <label for="username" class="form-label">Email</label>
+                            <input type="email" id="username" class="form-control" placeholder="Enter Email Address"
+                                required />
                         </div>
                         <div class="form-group mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="text" id="password" class="form-control" placeholder="Enter Password" required />
+                        </div>
+                        <div class="form-group mb-3">
+                            <label id="error" class="form-label text-danger"></label>
                         </div>
                         <button type="submit" class="btn btn-secondary">Login</button>
                     </form>
                     <a class="text-secondary" href="signup.php">Dont have an account?</a>
                 </div>
             </div>
-        <?php
+            <?php
         } else {
             ?>
             <div>
@@ -39,7 +43,8 @@ $logged = false;
                     </div>
                     <div class="account-info px-4 py-2">
                         <span style="display: block; font-weight: bold;" class="name">Abdul Raheem</span>
-                        <span class="logout"><a href="logout.php" class="text-danger">Logout</a></span>
+                        <span class="logout"><a href="<?php echo $_SERVER['PHP_SELF']; ?>" onclick="deleteCookie('zarsaw_login')"
+                                class="text-danger">Logout</a></span>
                     </div>
                 </section>
                 <hr />
@@ -72,7 +77,7 @@ $logged = false;
                     </li>
                 </ul>
             </div>
-        <?php
+            <?php
         }
         ?>
     </div>
@@ -82,3 +87,50 @@ $logged = false;
 </div>
 </div>
 <!-- Close Account -->
+
+<script>
+    const loginForm = document.getElementById('login-form');
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+    function getCookie(name) {
+        const cookieArr = document.cookie.split(";");
+        for (let i = 0; i < cookieArr.length; i++) {
+            const cookiePair = cookieArr[i].split("=");
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+    function deleteCookie(name) {
+        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+    if (loginForm) {
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append("email", document.getElementById('username').value);
+            formData.append("password", document.getElementById('password').value);
+            formData.append("action", "login");
+            const options = {
+                method: "POST",
+                body: formData
+            }
+            const res = await fetch("./api/users.php", options).then(res => res.json());
+            if (res.status !== 200) {
+                document.getElementById("error").innerHTML = "Username/Password not correct!";
+            } else {
+                setCookie("zarsaw_login", JSON.stringify(res.data), 1);
+                console.log(getCookie("zarsaw_login"))
+                location.reload();
+            }
+        });
+    }
+</script>
