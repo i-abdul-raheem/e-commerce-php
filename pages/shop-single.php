@@ -142,126 +142,7 @@ require('./components/search_modal.php');
 <!-- End Article -->
 
 <script>
-
-    var cart = [];
-
-    const addtocart = () => {
-        const temp = getCartItems();
-        cart = temp;
-        const item = {
-            id: document.getElementById('myId').value,
-            title: document.getElementById('product-title').innerHTML,
-            price: document.getElementById('product-price').innerHTML,
-            image: document.getElementById('product-detail').src,
-            quantity: document.getElementById('product-quanity').value,
-            color: document.getElementById('product-color').value,
-            size: document.getElementById('product-size-val').value
-        }
-        let found = false;
-        let index = -1;
-        for (let i in cart) {
-            if (cart[i].title === item.title && cart[i].color === item.color && cart[i].size === item.size) {
-                found = true;
-                index = i;
-            }
-        }
-        if (!found) cart.push(item);
-        else {
-            cart[index].quantity = parseInt(cart[index].quantity) + parseInt(item.quantity);
-        }
-
-        setCookie('cart', cart);
-        updateCart();
-    }
-
-    const incrementProduct = (index) => {
-        cart[index].quantity = parseInt(cart[index].quantity) + 1;
-        setCookie('cart', cart);
-        updateCart();
-    }
-    const decrementProduct = (index) => {
-        cart[index].quantity = parseInt(cart[index].quantity) - 1;
-        setCookie('cart', cart);
-        updateCart();
-    }
-
-    function isJsonString(str) {
-        try {
-            JSON.parse(str);
-        } catch (e) {
-            return false;
-        }
-        return true;
-    }
-
-    const getCartItems = () => {
-        const cookies = document.cookie.split('=');
-        if (cookies[0] === 'cart' && isJsonString(cookies[1])) {
-            const items = JSON.parse(cookies[1]);
-            return items;
-        }
-        return [];
-    }
-
-    const removeItem = (index) => {
-        cart.splice(index, 1);
-        setCookie('cart', cart);
-        updateCart();
-    }
-
-    const updateCart = () => {
-        document.getElementById("my-cart").innerHTML = "";
-        const myItems = getCartItems();
-        if (myItems.length > 0) {
-            myItems.map((i, index) => {
-                document.getElementById("my-cart").innerHTML += `
-                <div class="card mb-3">
-                    <div class="card-body p-2 d-flex justify-content-start">
-                        <img class="me-4" style="width: 100px; border-radius: 10px;"
-                            src="${i.image}" alt="test">
-                        <div class="info p-1">
-                            <a style="text-decoration: none; color: #000;" href="#">
-                                <h4 class="card-title mb-2 text-capitalize">${i.title}</h4>
-                            </a>
-                            <span style="display: ${i.price !== '' ? 'block' : 'none'}" class="text-secondary">Price: ${i.price}</span>
-                            <span style="display: ${i.color !== '' ? 'block' : 'none'}" class="text-secondary">Color: ${i.color}</span>
-                            <span style="display: ${i.quantity !== '' ? 'block' : 'none'}" class="text-secondary">Quantity: ${i.quantity}</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col">
-                                <button class="btn" onclick="decrementProduct(${index})"><i class="fa fa-chevron-down"></i></button>
-                                <input style="width: 40px; border: none; background-color: transparent; text-align: center;"
-                                    type="text" value="${i.quantity}" name="qty" id="qty" readonly />
-                                <button class="btn" onclick="incrementProduct(${index})"><i class="fa fa-chevron-up"></i></button>
-                            </div>
-                            <div class="col text-end"><button onclick="removeItem(${index})" class="btn btn-danger"><i class="fa fa-trash"></i></button></div>
-                        </div>
-                    </div>
-                </div>
-                `;
-            });
-            document.getElementById('totalItems').innerHTML = cart.length;
-            document.getElementById('myTotalPrice').innerHTML = getTotalPrice();
-        } else {
-            document.getElementById("my-cart").innerHTML = "Cart is empty";
-            document.getElementById('totalItems').innerHTML = cart.length;
-            document.getElementById('myTotalPrice').innerHTML = getTotalPrice();
-        }
-    }
-
-    function getTotalPrice() {
-        let total = 0;
-        for (let i of cart) {
-            total += parseFloat(i.price.split('$')[1]) * parseFloat(i.quantity);
-        }
-        return total;
-    }
-
-    const temp = getCartItems();
-    cart = temp;
-    updateCart();
+    
 
     const getProductDetails = async () => {
         const res = await fetch(`./api/products.php${window.location.search}`).then(res => res.json());
@@ -450,6 +331,7 @@ require('./components/search_modal.php');
         document.getElementById('product-size-val').value = id;
     }
     getProductDetails();
+    updateCart();
 
 </script>
 

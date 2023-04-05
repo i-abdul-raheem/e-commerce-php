@@ -63,6 +63,8 @@
         document.getElementById('header-nav').innerHTML = headerNav;
     }
     getHeaderNavs();
+
+    document.getElementById('totalItems').innerHTML = JSON.parse(getCookie('cart')).length;
 </script>
 
 <?php
