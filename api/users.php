@@ -50,10 +50,16 @@ switch ($_POST['action']) {
         if (mysqli_num_rows($res) > 0) {
             while ($row = mysqli_fetch_assoc($res)) {
                 $obj = array(
+                    "user_id" => $row["id"],
                     "fname" => $row["first_name"],
                     "lname" => $row["last_name"],
                     "email" => $row["email"],
-                    "mobile" => $row["mobile"]
+                    "mobile" => $row["mobile"],
+                    "address" => $row["address"],
+                    "city" => $row["city"],
+                    "state" => $row["state"],
+                    "zipcode" => $row["zipcode"],
+                    "country" => $row["country"],
                 );
             }
             $data = json_encode([
