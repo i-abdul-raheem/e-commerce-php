@@ -20,6 +20,8 @@ require("./components/header.php");
                         <th>Brand</th>
                         <th>Description</th>
                         <th>Specifications</th>
+                        <th>Rating</th>
+                        <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -49,7 +51,7 @@ require("./components/header.php");
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Price</label>
-                        <input type="number" class="form-control" />
+                        <input type="text" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Category</label>
@@ -75,10 +77,67 @@ require("./components/header.php");
                         <label for="exampleInputEmail1">Product Image</label>
                         <input type="file" class="form-control" />
                     </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Rating (1-5)</label>
+                        <input type="number" class="form-control" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="exampleModalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalUpdateLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalUpdateLabel">Add Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" class="form" id="update-form-product" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Title</label>
+                        <input type="text" id="title" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Price</label>
+                        <input type="text" id="price" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Category</label>
+                        <select class="form-control" id="category-options-update">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Brand</label>
+                        <select class="form-control" id="brand-options-update">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Description</label>
+                        <input type="text" id="description" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Specifications</label>
+                        <input type="text" id="specifications" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Rating (1-5)</label>
+                        <input type="number" id="rating" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>
@@ -99,6 +158,7 @@ require("./components/header.php");
         const description = event.target[4].value;
         const specification = event.target[5].value;
         const image = event.target[6].files[0];
+        const rating = event.target[7].value;
         const formData = new FormData();
         formData.append("action", "new");
         formData.append("title", title);
@@ -154,6 +214,9 @@ require("./components/header.php");
                         <td style="text-transform: capitalize;" id="brand-${i.product_id}"></td>
                         <td>${i.description}</td>
                         <td>${i.specification}</td>
+                        <td>${i.rating}</td>
+                        <td><button  data-toggle="modal" data-target="#exampleModalUpdate" class="btn btn-secondary"><i
+                                    class="fa fa-edit"></i></button></td>
                         <td><button onclick="deleteItem(${i.product_id})" class="btn btn-danger"><i
                                     class="fa fa-trash"></i></button></td>
                     </tr>

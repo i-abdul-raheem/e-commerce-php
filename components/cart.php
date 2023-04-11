@@ -116,9 +116,11 @@
     }
     const decrementProduct = (index) => {
         const cart = JSON.parse(getCookie('cart'));
-        cart[index].quantity = parseInt(cart[index].quantity) - 1;
-        setCookie('cart', JSON.stringify(cart));
-        updateCart();
+        if (cart[index].quantity - 1 > 0) {
+            cart[index].quantity = parseInt(cart[index].quantity) - 1;
+            setCookie('cart', JSON.stringify(cart));
+            updateCart();
+        }
     }
 
     function setCookie(name, value) {

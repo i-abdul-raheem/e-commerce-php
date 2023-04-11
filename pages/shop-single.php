@@ -49,14 +49,7 @@ require('./components/search_modal.php');
                     <div class="card-body">
                         <h1 class="h2 text-capitalize" id="product-title"></h1>
                         <p class="h3 py-2" id="product-price"></p>
-                        <p class="py-2">
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-warning"></i>
-                            <i class="fa fa-star text-secondary"></i>
-                            <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
-                        </p>
+                        <p class="py-2" id="myStars"></p>
                         <ul class="list-inline">
                             <li class="list-inline-item">
                                 <h6>Brand:</h6>
@@ -142,7 +135,7 @@ require('./components/search_modal.php');
 <!-- End Article -->
 
 <script>
-    
+
 
     const getProductDetails = async () => {
         const res = await fetch(`./api/products.php${window.location.search}`).then(res => res.json());
@@ -165,6 +158,17 @@ require('./components/search_modal.php');
             if (data && data.length > 0) {
                 let myData = "";
                 data.map(i => {
+                    let stars = parseInt(i.rating);
+                    let starsUi = "";
+                    for (let starIndex = 0; starIndex < 5; starIndex++) {
+                        if (starIndex < stars) {
+                            starsUi += '<i class="fa fa-star text-warning"></i>';
+                        } else {
+                            starsUi += '<i class="fa fa-star text-secondary"></i>';
+                        }
+                    }
+                    starsUi += `&nbsp; <span class="list-inline-item text-dark">Rating ${i.rating}/5</span>`;
+                    document.getElementById('myStars').innerHTML = starsUi;
                     myData += `
                     <div class="p-2 col-md-4 mb-3" style="height: 550px">
                         <div class="card h-100 product-wap rounded-0">

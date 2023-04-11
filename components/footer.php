@@ -87,7 +87,7 @@
                 <div class="col-12">
                     <p class="text-left text-light">
                         Copyright &copy; 2023 <?php echo SITE_TITLE; ?> | Powered by
-                        <a rel="sponsored" href="https://github.com/i-abdul-raheem/" target="_blank">Abdul Raheem</a>
+                        <a rel="sponsored" href="https://github.com/i-abdul-raheem/" target="_blank">ConsoleDot</a>
                     </p>
                 </div>
             </div>

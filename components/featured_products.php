@@ -17,11 +17,21 @@
         return temp.slice(0, n + 1).join(' ') + "...";
     }
     const getFeaturedProduct = async () => {
-        const res = await fetch('./api/products.php').then(res => res.json());
+        const res = await fetch('./api/products.php?featured=1').then(res => res.json());
         const data = res.data;
         data.filter((i) => i.featured !== "1");
         let myData = "";
         data?.map(i => {
+            let stars = parseInt(i.rating);
+            let starsUi = '<li>';
+            for(let starIndex = 0; starIndex < 5; starIndex++){
+                if(starIndex < stars){
+                    starsUi += '<i class="text-warning fa fa-star"></i>';
+                } else {
+                    starsUi += '<i class="text-muted fa fa-star"></i>';
+                }
+            }
+            starsUi += '</li>';
             myData += `
        <div class="col-12 col-md-4 mb-4">
                <div class="card h-100">
@@ -30,13 +40,7 @@
                    </a>
                    <div class="card-body">
                        <ul class="list-unstyled d-flex justify-content-between">
-                           <li>
-                               <i class="text-warning fa fa-star"></i>
-                               <i class="text-warning fa fa-star"></i>
-                               <i class="text-warning fa fa-star"></i>
-                               <i class="text-muted fa fa-star"></i>
-                               <i class="text-muted fa fa-star"></i>
-                           </li>
+                           ${starsUi}
                            <li class="text-muted text-right">$${i.price}</li>
                        </ul>
                        <a href="shop-single.php?product_id=${i.product_id}" class="h2 text-decoration-none text-dark d-block text-capitalize mb-3">${i.title}</a>

@@ -52,13 +52,13 @@ $logged = false;
                     <li class="nav-item py-3">
                         <a class="nav-link" href="orders.php"><i class="fa fa-receipt"></i> Orders</a>
                     </li>
-                    <li class="nav-item py-3">
+                    <!-- <li class="nav-item py-3">
                         <a class="nav-link" href="track-order.php"><i class="fa fa-truck"></i> Track Order</a>
-                    </li>
-                    <li class="nav-item py-3">
+                    </li> -->
+                    <!-- <li class="nav-item py-3">
                         <a class="nav-link" href="payment-settings.php"><i class="fa fa-credit-card"></i> Payment
                             Settings</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item py-3">
                         <a class="nav-link" href="payment-settings.php"><i class="fa fa-cogs"></i> Account
                             Settings</a>
@@ -82,7 +82,7 @@ $logged = false;
         ?>
     </div>
     <div class="offcanvas-footer d-flex justify-content-center p-2">
-        <a href="#" class="text-secondary">Powered By: Abdul Raheem</a>
+        <a href="#" class="text-secondary">Powered By: ConsoleDot</a>
     </div>
 </div>
 </div>

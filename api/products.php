@@ -74,6 +74,29 @@ switch ($_SERVER['REQUEST_METHOD']) {
             } else {
                 http_response_code(200);
             }
+        } else if (isset($_GET['featured']) && !empty($_GET['featured'])) {
+            $temp = json_decode($json, true);
+            $myData = array();
+            for ($i = 0; $i < count($temp); $i++) {
+                if ($temp[$i]["featured"] == 1) {
+                    array_push($myData, $temp[$i]);
+                }
+            }
+            $data = json_encode([
+                "status" => 200,
+                "message" => "OK",
+                "data" => $myData
+            ]);
+            if (count($myData) == 0) {
+                $data = json_encode([
+                    "status" => 404,
+                    "message" => "Not Found!",
+                    "data" => []
+                ]);
+                http_response_code(404);
+            } else {
+                http_response_code(200);
+            }
         } else {
             $temp = json_decode($json);
             $data = json_encode([

@@ -25,11 +25,7 @@ require('./components/search_modal.php');
 <section class="container py-5">
     <div class="row text-center pt-5 pb-3">
         <div class="col-lg-6 m-auto">
-            <h1 class="h1">Our Services</h1>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                Lorem ipsum dolor sit amet.
-            </p>
+            <h1 class="h1 mb-5">Our Services</h1>
         </div>
     </div>
     <div class="row">
