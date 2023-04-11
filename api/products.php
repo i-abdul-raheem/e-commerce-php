@@ -123,9 +123,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             $obj->brand = $_POST['brand'];
             $obj->description = $_POST['description'];
             $obj->specification = $_POST['specification'];
+            $obj->rating = $_POST['rating'];
             $obj->image = $file_name;
             if (move_uploaded_file($file_tmp, "../assets/img/" . $file_name)) {
-                $insertQuery = "INSERT INTO products VALUES(NULL, '$obj->title', '$obj->price', '$obj->brand', '$obj->description', '$obj->specification', '$obj->category', 0, '$obj->image')";
+                $insertQuery = "INSERT INTO products VALUES(NULL, '$obj->title', '$obj->price', '$obj->brand', '$obj->description', '$obj->specification', '$obj->category', 0, '$obj->image', '$obj->rating')";
                 if ($conn->query($insertQuery)) {
                     $data = json_encode([
                         "status" => 201,
@@ -137,14 +138,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $data = json_encode([
                         "status" => 500,
                         "message" => "Error",
-                        "data" => $obj
+                        "data" => $insertQuery
                     ]);
                     http_response_code(500);
                 }
             } else {
                 $data = json_encode([
                     "status" => 500,
-                    "message" => "Error",
+                    "message" => "Error Image",
                     "data" => $obj
                 ]);
                 http_response_code(500);

@@ -168,6 +168,7 @@ require("./components/header.php");
         formData.append("description", description);
         formData.append("specification", specification);
         formData.append("image", image);
+        formData.append("rating", rating);
         const options = { method: "POST", body: formData }
         const res = await fetch("../api/products.php", options).then(res => res.json());
         populateContent();
