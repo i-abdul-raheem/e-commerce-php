@@ -85,11 +85,11 @@
                 `;
             });
             document.getElementById('totalItems').innerHTML = JSON.parse(getCookie('cart')).length;
-            document.getElementById('myTotalPrice').innerHTML = getTotalPrice();
+            document.getElementById('myTotalPrice').innerHTML = getTotalPrice().toFixed(2);
         } else {
             document.getElementById("my-cart").innerHTML = "Cart is empty";
             document.getElementById('totalItems').innerHTML = JSON.parse(getCookie('cart')).length;
-            document.getElementById('myTotalPrice').innerHTML = getTotalPrice();
+            document.getElementById('myTotalPrice').innerHTML = getTotalPrice().toFixed(2);
         }
     }
 
@@ -142,7 +142,7 @@
         document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
     document.getElementById("my-cart").innerHTML = "Cart is empty";
-    document.getElementById('myTotalPrice').innerHTML = getTotalPrice();
+    document.getElementById('myTotalPrice').innerHTML = getTotalPrice().toFixed(2);
 
     updateCart();
 </script>

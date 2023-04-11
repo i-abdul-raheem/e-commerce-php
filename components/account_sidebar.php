@@ -22,7 +22,7 @@ $logged = false;
                         </div>
                         <div class="form-group mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="text" id="password" class="form-control" placeholder="Enter Password" required />
+                            <input type="password" id="password" class="form-control" placeholder="Enter Password" required />
                         </div>
                         <div class="form-group mb-3">
                             <label id="error" class="form-label text-danger"></label>
