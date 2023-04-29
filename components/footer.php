@@ -36,9 +36,9 @@
                     Supporting Documents
                 </h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><a class="text-decoration-none" href="#">Privacy Policy</a></li>
-                    <li><a class="text-decoration-none" href="#">Terms & Conditions</a></li>
-                    <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                    <li><a class="text-decoration-none" href="policy.php">Privacy Policy</a></li>
+                    <li><a class="text-decoration-none" href="terms.php">Terms & Conditions</a></li>
+                    <!-- <li><a class="text-decoration-none" href="#">FAQs</a></li> -->
                 </ul>
             </div>
 
@@ -50,22 +50,22 @@
             </div>
             <div class="col-auto me-auto">
                 <ul class="list-inline text-left footer-icons">
-                    <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" target="_blank" href="<?php echo FACEBOOK; ?>"><i
+                    <!-- <li class="list-inline-item border border-light rounded-circle text-center">
+                        <a class="text-light text-decoration-none" target="_blank" href="<?php // echo FACEBOOK; ?>"><i
                                 class="fab fa-facebook-f fa-lg fa-fw"></i></a>
                     </li>
                     <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" target="_blank" href="<?php echo INSTAGRAM; ?>"><i
+                        <a class="text-light text-decoration-none" target="_blank" href="<?php // echo INSTAGRAM; ?>"><i
                                 class="fab fa-instagram fa-lg fa-fw"></i></a>
                     </li>
                     <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" target="_blank" href="<?php echo TWITTER; ?>"><i
+                        <a class="text-light text-decoration-none" target="_blank" href="<?php // echo TWITTER; ?>"><i
                                 class="fab fa-twitter fa-lg fa-fw"></i></a>
                     </li>
                     <li class="list-inline-item border border-light rounded-circle text-center">
-                        <a class="text-light text-decoration-none" target="_blank" href="<?php echo LINKEDIN; ?>"><i
+                        <a class="text-light text-decoration-none" target="_blank" href="<?php // echo LINKEDIN; ?>"><i
                                 class="fab fa-linkedin fa-lg fa-fw"></i></a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <div class="col-auto">
@@ -87,7 +87,7 @@
                 <div class="col-12">
                     <p class="text-left text-light">
                         Copyright &copy; 2023 <?php echo SITE_TITLE; ?> | Powered by
-                        <a rel="sponsored" href="https://github.com/i-abdul-raheem/" target="_blank">ConsoleDot</a>
+                        <a rel="sponsored" href="https://consoledot.com" target="_blank">ConsoleDot</a>
                     </p>
                 </div>
             </div>
