@@ -42,13 +42,24 @@
                     data-bs-target="#account" aria-controls="account">
                     <i class="fa fa-fw fa-user text-dark mr-3"></i>
                     <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill text-dark"><i
-                            class="fa fa-dot-circle <?php if(!isset($_COOKIE["zarsaw_login"])) { echo "text-secondary"; } else { echo "text-success"; } ?>" ></i></span>
+                            class="fa fa-dot-circle <?php if (!isset($_COOKIE["zarsaw_login"])) {
+                                echo "text-secondary";
+                            } else {
+                                echo "text-success";
+                            } ?>"></i></span>
                 </a>
             </div>
         </div>
     </div>
 </nav>
+
+<a data-bs-toggle="offcanvas" class="mobileIcon bg-dark" data-bs-target="#cart" aria-controls="cart">
+    <i style="color: #fff;" class="fa fa-fw fa-cart-arrow-down mr-1"></i>
+    <span style="color: #fff;" class="position-absolute top-1 left-100 translate-middle badge rounded-pill bg-dark"
+        id="totalItemsMobile"></span>
+</a>
 <!-- Close Header -->
+
 <script>
     const getHeaderNavs = async () => {
         const res = await fetch("./assets/json/header-nav.json").then(res => res.json());
@@ -63,8 +74,8 @@
         document.getElementById('header-nav').innerHTML = headerNav;
     }
     getHeaderNavs();
-
     document.getElementById('totalItems').innerHTML = JSON.parse(getCookie('cart')).length;
+    document.getElementById('totalItemsMobile').innerHTML = JSON.parse(getCookie('cart')).length;
 </script>
 
 <?php

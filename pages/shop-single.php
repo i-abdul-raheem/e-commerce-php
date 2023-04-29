@@ -46,6 +46,12 @@ require('./components/search_modal.php');
             <!-- col end -->
             <div class="col-lg-7 mt-5">
                 <div class="card">
+                    <div class="card-header">
+                        <a style="color: #000;" href="index.php">Home</a>&nbsp;/&nbsp;
+                        <a style="color: #000; text-transform: Capitalize;" href="shop.php?category="
+                            id="product-category"></a>&nbsp;/&nbsp;
+                        <span style="cursor: default; text-transform: Capitalize;" id="product-title-nav"></span>
+                    </div>
                     <div class="card-body">
                         <h1 class="h2 text-capitalize" id="product-title"></h1>
                         <p class="h3 py-2" id="product-price"></p>
@@ -146,6 +152,12 @@ require('./components/search_modal.php');
         const setBrandTitle = async (id) => {
             const res = await fetch(`./api/brands.php?id=${id}`).then(res => res.json());
             setValueById("product-brand", res?.data?.title);
+        }
+        async function getCategoryName(id) {
+            console.log(id)
+            const res = await fetch(`api/categories.php?id=${id}`).then(res => res.json());
+            document.getElementById(`product-category`).innerHTML = res?.data?.title || 'Category';
+            document.getElementById('product-category').href += id;
         }
         const getRelatedProducts = async (id) => {
             const res = await fetch(`./api/products.php?category=${id}`).then(res => res.json());
@@ -271,12 +283,14 @@ require('./components/search_modal.php');
         document.getElementById("product-detail").src += data.image;
         const firstImage = data.image;
         setValueById("product-title", data.title);
+        setValueById("product-title-nav", data.title);
         document.getElementById("myId").value = data.product_id;
         setValueById("product-price", `$${data.price}`);
         setProductColors(data.product_id);
         setProductSizes(data.product_id);
         setValueById("product-description", data.description);
         setValueById("product-specification", data.specification);
+        getCategoryName(data.category);
         setBrandTitle(data.brand);
         getRelatedProducts(data.category);
         const setImages = async (product) => {

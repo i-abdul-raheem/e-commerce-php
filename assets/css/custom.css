@@ -21,3 +21,19 @@ Custom Css
 .nav-item:hover .nav-link {
   color: #000;
 }
+
+.mobileIcon {
+  position: fixed;
+  display: none;
+  bottom: 25px;
+  right: 25px;
+  padding: 25px;
+  border-radius: 50px;
+}
+
+@media only screen and (max-width: 991px) {
+  .mobileIcon {
+    z-index: 99;
+    display: block;
+  }
+}

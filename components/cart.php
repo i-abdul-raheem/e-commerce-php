@@ -85,9 +85,11 @@
                 `;
             });
             document.getElementById('totalItems').innerHTML = JSON.parse(getCookie('cart')).length;
+            document.getElementById('totalItemsMobile').innerHTML = JSON.parse(getCookie('cart')).length;
             document.getElementById('myTotalPrice').innerHTML = getTotalPrice().toFixed(2);
         } else {
             document.getElementById("my-cart").innerHTML = "Cart is empty";
+            document.getElementById('totalItemsMobile').innerHTML = JSON.parse(getCookie('cart')).length;
             document.getElementById('totalItems').innerHTML = JSON.parse(getCookie('cart')).length;
             document.getElementById('myTotalPrice').innerHTML = getTotalPrice().toFixed(2);
         }
