@@ -12,11 +12,11 @@ $(document).ready(function () {
   var all_panels = $(".templatemo-accordion > li > ul").hide();
 
   $(".templatemo-accordion > li > a").click(function () {
-    console.log("Hello world!");
     var target = $(this).next();
-    if (!target.hasClass("active")) {
-      all_panels.removeClass("active").slideUp();
-      target.addClass("active").slideDown();
+    if(target[0].style.display == 'block'){
+      target[0].style.display = "none";
+    } else {
+      target[0].style.display = "block";
     }
     return false;
   });

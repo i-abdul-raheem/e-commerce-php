@@ -48,7 +48,7 @@ Ena Map -->
 <!-- Start Contact -->
 <div class="container py-5">
     <div class="row py-5">
-        <form class="col-md-9 m-auto" method="post" role="form">
+        <form class="col-md-9 m-auto" method="post" role="form" id="contact-form">
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
                     <label for="inputname">Name</label>
@@ -78,6 +78,23 @@ Ena Map -->
         </form>
     </div>
 </div>
+<script>
+    const form = document.getElementById('contact-form');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("name", document.getElementById('name').value);
+        formData.append("email", document.getElementById('email').value);
+        formData.append("subject", document.getElementById('subject').value);
+        formData.append("message", document.getElementById('message').value);
+        const options = {
+            method: "POST",
+            body: formData,
+        }
+        const response = await fetch("./api/mail.php", options).then(res => res.json());
+        alert(response.message);
+    });
+</script>
 <!-- End Contact -->
 
 <?php
