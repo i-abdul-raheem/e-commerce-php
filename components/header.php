@@ -5,14 +5,12 @@
             <?php echo SITE_TITLE; ?>
         </a>
 
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-            data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
+        <button class="navbar-toggler border-0" type="button" id="menuBtn">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between"
-            id="templatemo_main_nav">
+        <div class="align-self-center  navbar-collapse flex-fill d-lg-flex justify-content-lg-between"
+            id="templatemo_main_nav" style="display: none;">
             <div class="flex-fill">
                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto" id="header-nav">
 
@@ -61,6 +59,17 @@
 <!-- Close Header -->
 
 <script>
+    document.getElementById('menuBtn').addEventListener('click', (e) => {
+        toggleNav();
+    });
+    const toggleNav = () => {
+        const ref = document.getElementById('templatemo_main_nav');
+        if (ref.style.display == 'block') {
+            ref.style.display = 'none';
+        } else {
+            ref.style.display = 'block';
+        }
+    }
     const getHeaderNavs = async () => {
         const res = await fetch("./assets/json/header-nav.json").then(res => res.json());
         let headerNav = "";
